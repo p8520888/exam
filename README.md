@@ -1,64 +1,92 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## 啟動專案
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+請先安裝docker、docker compose，安裝完之後進入資料夾下命令行:docker compose up，即可在http://127.0.0.1:8111看到該專案。
 
-## About Laravel
+## API 介接方法
+新增佈告
+呼叫方式:post
+| Body 參數      | 格式          | 必填  | 說明     |
+| :------------- |:------------- | :-----| :------ |
+| content        | string       |required|布告內容 |
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Response
+```
+{
+  "status": "ok",
+  "message": "新增成功",
+  "post": {
+    "content": "as",
+    "updated_at": "2022-10-16T10:16:43.000000Z",
+    "created_at": "2022-10-16T10:16:43.000000Z",
+    "id": 7
+  }
+}
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+修改佈告
+呼叫方式:put
+| url 參數      | 格式          | 必填  | 說明     |
+| :------------- |:------------- | :-----| :------ |
+| id        | integer       |required|布告id |
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+| Body 參數      | 格式          | 必填  | 說明     |
+| :------------- |:------------- | :-----| :------ |
+| content        | string       |required|布告內容 |
 
-## Learning Laravel
+Response
+```
+{
+  "status": "ok",
+  "message": "修改成功",
+  "post": {
+    "id": 8,
+    "content": "34",
+    "created_at": "2022-10-16T10:30:10.000000Z",
+    "updated_at": "2022-10-16T10:30:13.000000Z"
+  }
+}
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+刪除佈告
+呼叫方式:delete
+| url 參數      | 格式          | 必填  | 說明     |
+| :------------- |:------------- | :-----| :------ |
+| id        | integer       |required|布告id |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Response
+```
+{"status":"ok","message":"刪除成功"}
+```
 
-## Laravel Sponsors
+查詢佈告
+呼叫方式:get
+| url 參數      | 格式          | 必填  | 說明     |
+| :------------- |:------------- | :-----| :------ |
+| id        | integer       |required|布告id |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Response
+```
+{
+  "status": "ok",
+  "message": "查詢成功",
+  "post": {
+    "id": 7,
+    "content": "as",
+    "created_at": "2022-10-16T10:16:43.000000Z",
+    "updated_at": "2022-10-16T10:16:43.000000Z"
+  }
+}
+```
 
-### Premium Partners
+## 服務架構
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+三個docker container
+nginx + php-fpm + mysql
+由於使用docker compose三個container為同一個docker網路
+三個container之間對於外部網路(本地主機)來說是不可見的
+但是三個container之間的網路是可以互通的
+對網址開放nginx port讓本地主機(或本地主機之外的外部連線)可以通過nginx訪問web服務
+其餘php-fpm與mysql是不會暴露port給本地主機
+php-fpm與nginx使用cgi協議通信
+php-fpm與mysql使用mysql協議通信
 
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
