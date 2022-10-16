@@ -30,7 +30,7 @@ services:
     container_name: php74-e
     restart: unless-stopped
     volumes:
-      - ~/exam:/source/project
+      - ../exam:/source/project
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command:
