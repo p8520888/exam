@@ -45,7 +45,6 @@ services:
         php artisan optimize:clear
         php artisan config:cache
         php artisan route:cache
-        npm install
         php artisan migrate
         composer dump-autoload
         php-fpm
