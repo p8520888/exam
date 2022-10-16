@@ -21,7 +21,7 @@ services:
       MYSQL_USER: db_user
       MYSQL_PASSWORD: db_user_pass
     ports:
-      - "3307:3307"
+      - "3307:3306"
 
   php74-e:
     build:
