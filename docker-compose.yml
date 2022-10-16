@@ -5,8 +5,8 @@ services:
     image: nginx:latest
     container_name: nginx-e
     ports:
-      - 8001:80
-      - 8002:443
+      - 8111:80
+      - 8222:443
     volumes_from:
       - php74-e
     volumes:
