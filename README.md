@@ -1,6 +1,6 @@
 ## 啟動專案
 
-請先安裝docker、docker compose，安裝完之後進入資料夾下命令行:docker compose up，即可在[看到該專案](http://127.0.0.1:8111)。遵循restful api開發。
+請先安裝docker、docker compose，安裝完之後進入資料夾下命令行:docker compose up，即可在[http://127.0.0.1:8111](http://127.0.0.1:8111)，看到該專案。遵循restful api開發。
 
 ## API 介接方法
 新增佈告
