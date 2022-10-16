@@ -53,4 +53,3 @@ services:
         php artisan migrate
         composer dump-autoload
         php-fpm
-~                  
