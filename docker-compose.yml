@@ -1,6 +1,6 @@
 version: "3.6"
 services:
-  nginx:
+  nginx-e:
     restart: unless-stopped
     image: nginx:latest
     container_name: nginx-e
@@ -12,7 +12,7 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
 
-  db:
+  db-e:
     image: mysql:5.7
     container_name: db-e
     environment:
@@ -23,7 +23,7 @@ services:
     ports:
       - "3307:3307"
 
-  php74:
+  php74-e:
     build:
       context: .
       dockerfile: php.dockerfile
