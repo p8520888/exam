@@ -22,8 +22,6 @@ services:
       MYSQL_PASSWORD: db_user_pass
     ports:
       - "3307:3307"
-    volumes:
-      - dbdata:/var/lib/mysql
 
   php74:
     build:
@@ -32,7 +30,7 @@ services:
     container_name: php74-e
     restart: unless-stopped
     volumes:
-      - ./project:/source/project
+      - ~/exam:/source/project
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command:
