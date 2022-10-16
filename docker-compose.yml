@@ -8,7 +8,7 @@ services:
       - 8001:80
       - 8002:443
     volumes_from:
-      - php74
+      - php74-e
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
 
@@ -24,21 +24,6 @@ services:
       - "3307:3307"
     volumes:
       - dbdata:/var/lib/mysql
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: pma-e
-    links:
-      - db-e
-    environment:
-      PMA_HOST: db-e
-      PMA_PORT: 3307
-      PMA_ARBITRARY: 1
-    restart: always
-    ports:
-      - 8003:80
-  volumes:
-    dbdata:
 
   php74:
     build:
