@@ -1,6 +1,6 @@
 ## 啟動專案
 
-請先安裝docker、docker compose，安裝完之後進入資料夾下命令行:docker compose up，即可在http://127.0.0.1:8111看到該專案。
+請先安裝docker、docker compose，安裝完之後進入資料夾下命令行:docker compose up，即可在http://127.0.0.1:8111，看到該專案。遵循restful api開發。
 
 ## API 介接方法
 新增佈告
@@ -80,13 +80,13 @@ Response
 
 ## 服務架構
 
-三個docker container
-nginx + php-fpm + mysql
-由於使用docker compose三個container為同一個docker網路
-三個container之間對於外部網路(本地主機)來說是不可見的
-但是三個container之間的網路是可以互通的
-對網址開放nginx port讓本地主機(或本地主機之外的外部連線)可以通過nginx訪問web服務
-其餘php-fpm與mysql是不會暴露port給本地主機
-php-fpm與nginx使用cgi協議通信
-php-fpm與mysql使用mysql協議通信
+三個docker container，
+nginx + php-fpm + mysql，
+由於使用docker compose三個container為同一個docker網路，
+三個container之間對於外部網路(本地主機)來說是不可見的，
+但是三個container之間的網路是可以互通的，
+對網址開放nginx port讓本地主機(或本地主機之外的外部連線)可以通過nginx訪問web服務，
+其餘php-fpm與mysql是不會暴露port給本地主機，
+php-fpm與nginx使用cgi協議通信，
+php-fpm與mysql使用mysql協議通信。
 
