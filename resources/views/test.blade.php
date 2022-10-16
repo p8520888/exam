@@ -3,6 +3,22 @@
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.1.3/axios.min.js"></script>
     <script>
+        function idCheck() {
+            if (!id.value) {
+                alert('請填寫ID')
+                return false;
+            }
+            return true;
+        }
+
+        function contentCheck() {
+            if (!content.value) {
+                alert('請填寫內容')
+                return false;
+            }
+            return true;
+        }
+
         window.onload = function() {
             var id = document.getElementById('id')
             var content = document.getElementById('content')
@@ -11,46 +27,58 @@
 
 
         function view() {
-            axios.get('/api/post/' + id.value, {
-                'id': id.value
-            }).catch(function(error) {
-                alert(error.response.data.message)
-            }).then(function(response) {
-                result.innerHTML = JSON.stringify(response.data)
-            })
+            if (idCheck()) {
+                axios.get('/api/post/' + id.value, {
+                    'id': id.value
+                }).catch(function(error) {
+                    alert(error.response.data.message)
+                }).then(function(response) {
+                    result.innerHTML = JSON.stringify(response.data)
+                })
+            }
+
         }
 
         function store() {
-            axios.post('/api/post', {
-                'content': content.value
-            }).catch(function(error) {
-                alert(error.response.data.message)
-            }).then(function(response) {
-                result.innerHTML = JSON.stringify(response.data)
-            })
+            if (contentCheck()) {
+                axios.post('/api/post', {
+                    'content': content.value
+                }).catch(function(error) {
+                    alert(error.response.data.message)
+                }).then(function(response) {
+                    result.innerHTML = JSON.stringify(response.data)
+                })
+            }
+
         }
 
         function update() {
-            axios.post('/api/post/' + id.value, {
-                '_method': 'put',
-                'id': id.value,
-                'content': content.value
-            }).catch(function(error) {
-                alert(error.response.data.message)
-            }).then(function(response) {
-                result.innerHTML = JSON.stringify(response.data)
-            })
+            if (idCheck() && contentCheck()) {
+                axios.post('/api/post/' + id.value, {
+                    '_method': 'put',
+                    'id': id.value,
+                    'content': content.value
+                }).catch(function(error) {
+                    alert(error.response.data.message)
+                }).then(function(response) {
+                    result.innerHTML = JSON.stringify(response.data)
+                })
+            }
+
         }
 
         function destory() {
-            axios.post('/api/post/' + id.value, {
-                'id': id.value,
-                '_method': 'delete',
-            }).catch(function(error) {
-                alert(error.response.data.message)
-            }).then(function(response) {
-                result.innerHTML = JSON.stringify(response.data)
-            })
+            if (idCheck()) {
+                axios.post('/api/post/' + id.value, {
+                    'id': id.value,
+                    '_method': 'delete',
+                }).catch(function(error) {
+                    alert(error.response.data.message)
+                }).then(function(response) {
+                    result.innerHTML = JSON.stringify(response.data)
+                })
+            }
+
         }
     </script>
 
