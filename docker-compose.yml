@@ -1,0 +1,71 @@
+version: "3.6"
+services:
+  nginx:
+    restart: unless-stopped
+    image: nginx:latest
+    container_name: nginx-e
+    ports:
+      - 8001:80
+      - 8002:443
+    volumes_from:
+      - php74
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+
+  db:
+    image: mysql:5.7
+    container_name: db-e
+    environment:
+      MYSQL_ROOT_PASSWORD: my_secret_password
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: db_user_pass
+    ports:
+      - "3307:3307"
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma-e
+    links:
+      - db-e
+    environment:
+      PMA_HOST: db-e
+      PMA_PORT: 3307
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8003:80
+  volumes:
+    dbdata:
+
+  php74:
+    build:
+      context: .
+      dockerfile: php.dockerfile
+    container_name: php74-e
+    restart: unless-stopped
+    volumes:
+      - ./project:/source/project
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command:
+      - /bin/bash
+      - -c
+      - |
+        cd project
+        cp .env.example .env
+        composer install
+        php artisan key:generate
+        chown -R $USER:www-data storage
+        chown -R $USER:www-data bootstrap/cache
+        chmod -R ugo+rw storage
+        php artisan optimize:clear
+        php artisan config:cache
+        php artisan route:cache
+        npm install
+        php artisan migrate
+        composer dump-autoload
+        php-fpm
+~                  
